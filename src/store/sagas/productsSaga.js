@@ -8,7 +8,9 @@ export function getProductsAction() {
 
 export function* getProductsSaga(action) {
   try {
-    const res = yield call(() => fetch(`http://localhost:5000/product`));
+    const res = yield call(() =>
+      fetch(`https://my-json-server.typicode.com/YurOK102/Rentateam/product`)
+    );
     const data = yield res.json();
 
     yield put(deliverToReducer(action.type, data, res.status));
@@ -23,7 +25,9 @@ export function getCategoriesAction() {
 
 export function* getCategoriesSaga(action) {
   try {
-    const res = yield call(() => fetch(`http://localhost:5000/categories`));
+    const res = yield call(() =>
+      fetch(`https://my-json-server.typicode.com/YurOK102/Rentateam/categories`)
+    );
     const data = yield res.json();
 
     yield put(deliverToReducer(action.type, data, res.status));

@@ -15,37 +15,40 @@ const ProductCard = ({
 
   const [getQuantity, setGetQuantity] = useState(0);
 
-  const { id, name, price, delivery, img, quantity, banner } =
-    idProduct?.[idItem];
   const onAddToCart = () => {
     handlerAddToCart({
-      id,
-      name,
-      price,
-      delivery,
-      img,
-      quantity,
+      id: idProduct?.[idItem]?.id,
+      name: idProduct?.[idItem]?.name,
+      price: idProduct?.[idItem]?.price,
+      delivery: idProduct?.[idItem]?.delivery,
+      img: idProduct?.[idItem]?.img,
+      quantity: idProduct?.[idItem]?.quantity,
     });
   };
 
+  const destructItem = idProduct?.[idItem]?.id;
   useEffect(() => {
-    const addedItemInCart = cartItems.find((item) => item.id === id);
+    const addedItemInCart = cartItems.find(
+      (item) => item.id === idProduct?.[idItem]?.id
+    );
     setGetQuantity(addedItemInCart?.quantity);
-  }, [id, cartItems, getQuantity, setGetQuantity]);
+  }, [destructItem, cartItems, getQuantity, setGetQuantity, idProduct, idItem]);
 
   const product = () => {
     return (
       <div className={classes.product}>
-        {banner === 'new' && (
+        {idProduct?.[idItem]?.banner === 'new' && (
           <div className={classes.product__banner_new}>Новое</div>
         )}
-        {banner === 'hit' && (
+        {idProduct?.[idItem]?.banner === 'hit' && (
           <div className={classes.product__banner_hit}>Хит</div>
         )}
 
         {getQuantity > 0 ? (
           <div className={classes.product__wrap_double_btn}>
-            <button onClick={() => handlerDecrementProduct(id)}>
+            <button
+              onClick={() => handlerDecrementProduct(idProduct?.[idItem]?.id)}
+            >
               {getQuantity < 2 ? (
                 <img
                   className={classes.product__remove_icon}
@@ -57,7 +60,9 @@ const ProductCard = ({
               )}
             </button>
             <p>{getQuantity}</p>
-            <button onClick={() => handlerIncrementProduct(id)}>
+            <button
+              onClick={() => handlerIncrementProduct(idProduct?.[idItem]?.id)}
+            >
               <img src={'img/plus_max.svg'} alt="" />
             </button>
           </div>
@@ -67,20 +72,28 @@ const ProductCard = ({
           </button>
         )}
         <div className={classes.product__wrap_img}>
-          <img src={img} alt="" />
+          <img src={idProduct?.[idItem]?.img} alt="" />
         </div>
         <div className={classes.product__text}>
           <div className={classes.product__name}>
-            <p>{name}</p>
+            <p>{idProduct?.[idItem]?.name}</p>
           </div>
-          <div className={classes.product__price}>{price}₽</div>
+          <div className={classes.product__price}>
+            {idProduct?.[idItem]?.price}₽
+          </div>
         </div>
       </div>
     );
   };
 
   return (
-    <>{selector === 'delivery' ? <>{delivery && product()}</> : product()}</>
+    <>
+      {selector === 'delivery' ? (
+        <>{idProduct?.[idItem]?.delivery && product()}</>
+      ) : (
+        product()
+      )}
+    </>
   );
 };
 
